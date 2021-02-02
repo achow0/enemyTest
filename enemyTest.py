@@ -2,6 +2,7 @@ import math
 import tkinter as tk
 from pynput import keyboard
 
+#pynput functions
 def key_to_str(key):
     numpadDict={f"{i+96}": str(i) for i in range(10)}
     numpadDict["110"]="."
@@ -50,6 +51,7 @@ def on_release(key):
     key=key_to_str(key)
     keypress_list.remove(key)
 
+#gunner movement
 def gunner_check():
     global r, center_x, center_y, gunner_x, gunner_y, gunner, gunner_speed
     PI=math.pi
@@ -60,9 +62,9 @@ def gunner_check():
     g_to_p_ang=math.atan2(dy,dx)
     p_to_g_ang=math.atan2(ndy,ndx)
     dist=math.sqrt(dx*dx+dy*dy)
-    ang_increase=(5/(2*PI*r))*(2*PI)
+    ang_increase=(gunner_speed/(2*PI*r))*(2*PI)
     t=p_to_g_ang
-    if abs(dist-r)<=1:#basically on the orbit
+    if abs(dist-r)<=0.5:#basically on the orbit
         print("Orbit Phase")
         t+=ang_increase
         gunner_x=r*math.cos(t)+center_x
@@ -72,11 +74,11 @@ def gunner_check():
         gunner_x=r*math.cos(t)+center_x
         gunner_y=r*math.sin(t)+center_y
     elif dist>r:#far from orbit
-        print("Rush Phase")#go towards player pos
-        gunner_x+=5*math.cos(g_to_p_ang)
-        gunner_y+=5*math.sin(g_to_p_ang)
+        print("Rush Phase")
+        gunner_x+=gunner_speed*math.cos(g_to_p_ang)
+        gunner_y+=gunner_speed*math.sin(g_to_p_ang)
     elif dist<r:#far inside of orbit
-        print("Run Phase")#go to farthest point away from player
+        print("Run Phase")
         gunner_x+=gunner_speed*math.cos(p_to_g_ang)
         gunner_y+=gunner_speed*math.sin(p_to_g_ang)
     if gunner_x<10:
@@ -90,6 +92,7 @@ def gunner_check():
     canvas.coords(gunner, gunner_x-10, gunner_y-10, gunner_x+10, gunner_y+10)
     root.after(100, gunner_check)
 
+#player movement
 def movement():
     global keypress_list, speed, center_x, center_y, speed, safe_circle, r, player
     dx=0
@@ -116,26 +119,33 @@ def movement():
     canvas.coords(player, center_x-10, center_y-10, center_x+10, center_y+10)
     root.after(100, movement)
 
+#tkinter canvas
 root=tk.Tk()
 canvas=tk.Canvas(root, height=800, width=800)
 root.resizable(False, False)
 
+#player stats
 center_x=400
 center_y=400
-r=100
 speed=10
+r=100
+
+#gunner stats
 gunner_x=10
 gunner_y=10
-gunner_speed=5
+gunner_speed=10
 
+#creating widgets
 player=canvas.create_rectangle(center_x-10, center_y-10, center_x+10, center_y+10)
 gunner=canvas.create_rectangle(gunner_x-10, gunner_y-10, gunner_x+10, gunner_y+10)
 safe_circle=canvas.create_oval(center_x-r, center_y-r, center_x+r, center_y+r)
 
+#keyboard input
 keypress_list=[]
 listener=keyboard.Listener(on_press=on_press, on_release=on_release)
 listener.start()
 
+#initialize
 canvas.pack()
 root.after(100,gunner_check)
 root.after(100, movement)
