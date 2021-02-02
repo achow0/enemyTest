@@ -133,7 +133,7 @@ r=100
 #gunner stats
 gunner_x=10
 gunner_y=10
-gunner_speed=10
+gunner_speed=5
 
 #creating widgets
 player=canvas.create_rectangle(center_x-10, center_y-10, center_x+10, center_y+10)
