@@ -51,8 +51,8 @@ def on_release(key):
     keypress_list.remove(key)
 
 def gunner_check():
-    global r, center_x, center_y, gunner_x, gunner_y, gunner
-    PI=math.pi#180 degrees
+    global r, center_x, center_y, gunner_x, gunner_y, gunner, gunner_speed
+    PI=math.pi
     dx=center_x-gunner_x
     dy=center_y-gunner_y
     ndx=-dx
@@ -60,7 +60,7 @@ def gunner_check():
     g_to_p_ang=math.atan2(dy,dx)
     p_to_g_ang=math.atan2(ndy,ndx)
     dist=math.sqrt(dx*dx+dy*dy)
-    ang_increase=1/20
+    ang_increase=(5/(2*PI*r))*(2*PI)
     t=p_to_g_ang
     if abs(dist-r)<=1:#basically on the orbit
         print("Orbit Phase")
@@ -77,8 +77,8 @@ def gunner_check():
         gunner_y+=5*math.sin(g_to_p_ang)
     elif dist<r:#far inside of orbit
         print("Run Phase")#go to farthest point away from player
-        gunner_x+=5*math.cos(p_to_g_ang)
-        gunner_y+=5*math.sin(p_to_g_ang)
+        gunner_x+=gunner_speed*math.cos(p_to_g_ang)
+        gunner_y+=gunner_speed*math.sin(p_to_g_ang)
     if gunner_x<10:
         gunner_x=10
     if gunner_x>790:
