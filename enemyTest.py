@@ -51,6 +51,11 @@ def on_release(key):
     key=key_to_str(key)
     keypress_list.remove(key)
 
+def within_border_check(n):
+    n=790 if n>790 else n
+    n=10 if n<10 else n
+    return n
+    
 #gunner movement
 def gunner_check():
     global r, center_x, center_y, gunner_x, gunner_y, gunner, gunner_speed
@@ -81,14 +86,8 @@ def gunner_check():
         print("Run Phase")
         gunner_x+=gunner_speed*math.cos(p_to_g_ang)
         gunner_y+=gunner_speed*math.sin(p_to_g_ang)
-    if gunner_x<10:
-        gunner_x=10
-    if gunner_x>790:
-        gunner_x=790
-    if gunner_y<10:
-        gunner_y=10
-    if gunner_y>790:
-        gunner_y=790
+    gunner_x=within_border_check(gunner_x)
+    gunner_y=within_border_check(gunner_y)
     canvas.coords(gunner, gunner_x-10, gunner_y-10, gunner_x+10, gunner_y+10)
     root.after(100, gunner_check)
 
@@ -107,14 +106,8 @@ def movement():
         dx+=speed
     center_x+=dx
     center_y+=dy
-    if center_x>790:
-        center_x=790
-    elif center_x<10:
-        center_x=10
-    if center_y>790:
-        center_y=790
-    elif center_y<10:
-        center_y=10
+    center_x=within_border_check(center_x)
+    center_y=within_border_check(center_y)
     canvas.coords(safe_circle, center_x-r, center_y-r, center_x+r, center_y+r)
     canvas.coords(player, center_x-10, center_y-10, center_x+10, center_y+10)
     root.after(100, movement)
