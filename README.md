@@ -8,8 +8,8 @@ When the enemy is really close to the player(within r±0.5 units away from the c
 ## Phase 2: Going into Orbit Phase
 When the enemy is within a close vicinity to the player(within r±10 units away from the circle), this phase will be initiated. This signifies that the enemy is close to the orbit. This will cause the enemy to go to the closest point on the orbit. 
 ## Phase 3: Rush Phase
-When the enemy is farther than r+10 units away from the player(so not **Phase 1** or **Phase 2**), then this phase will be initiated. When in this phase, the enemy will start heading towards the player. 
+When the enemy is farther than r+10 units away from the player(so outside of the circle and not **Phase 1** or **Phase 2**), then this phase will be initiated. When in this phase, the enemy will start heading towards the player. 
 ## Phase 4: Run Phase
-When the enemy is closer than r-10 units away from the player(so really close to the player), then this phase will be initiated. When in this phase, the enemy will start running away from the player. 
+When the enemy is closer than r-10 units away from the player(so really close to the player within the orbit), then this phase will be initiated. When in this phase, the enemy will start running away from the player. 
 # Dependencies Required
 [Pynput 1.7.2](https://pynput.readthedocs.io/en/latest/)
