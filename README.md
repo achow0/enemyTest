@@ -4,7 +4,7 @@ This was the code used to test an enemy's movement in my friend's game. You can 
 This enemy will rush the player until it is a certain distance away from the player(I will call this distance r), then start orbiting around the player. The circle has radius r to show where the enemy will start orbiting. I will be calling the circle "orbit". The enemy will start running away if it is too close to the player(within the circle). 
 The enemy has 4 "movement phases", which I will be listing below.
 ## Phase 1: Orbit Phase
-When the enemy is really close to the player(within r±1 units away from the circle), this phase will be initiated. This signifies that the enemy is currently orbitting, so it will continue on the orbit.
+When the enemy is really close to the player(within r±0.5 units away from the circle), this phase will be initiated. This signifies that the enemy is currently orbitting, so it will continue on the orbit.
 ## Phase 2: Going into Orbit Phase
 When the enemy is within a close vicinity to the player(within r±10 units away from the circle), this phase will be initiated. This signifies that the enemy is close to the orbit. This will cause the enemy to go to the closest point on the orbit. 
 ## Phase 3: Rush Phase
