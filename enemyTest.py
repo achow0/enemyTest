@@ -58,9 +58,7 @@ def last_phase(last,n):
     return n
 
 def within_border_check(n):
-    n=790 if n>790 else n
-    n=10 if n<10 else n
-    return n
+    return n if 10<n<790 else [10,790][n>790]
     
 #gunner movement
 def gunner_check(lastPhase=-1):
