@@ -51,45 +51,49 @@ def on_release(key):
     key=key_to_str(key)
     keypress_list.remove(key)
 
+def last_phase(last,n):
+    phase_list=[f"{i} Phase" for i in ["Orbit", "Go To Orbit", "Rush", "Run"]]
+    if last!=n:
+        print(phase_list[n])
+    return n
+
 def within_border_check(n):
     n=790 if n>790 else n
     n=10 if n<10 else n
     return n
     
 #gunner movement
-def gunner_check():
+def gunner_check(lastPhase=-1):
     global r, center_x, center_y, gunner_x, gunner_y, gunner, gunner_speed
     PI=math.pi
     dx=center_x-gunner_x
     dy=center_y-gunner_y
-    ndx=-dx
-    ndy=-dy
     g_to_p_ang=math.atan2(dy,dx)
-    p_to_g_ang=math.atan2(ndy,ndx)
+    p_to_g_ang=PI+g_to_p_ang
     dist=math.sqrt(dx*dx+dy*dy)
-    ang_increase=(gunner_speed/(2*PI*r))*(2*PI)
+    ang_increase=gunner_speed/r
     t=p_to_g_ang
     if abs(dist-r)<=0.5:#basically on the orbit
-        print("Orbit Phase")
+        lastPhase=last_phase(lastPhase,0)
         t+=ang_increase
         gunner_x=r*math.cos(t)+center_x
         gunner_y=r*math.sin(t)+center_y
     elif abs(dist-r)<10:#within the vicinity of orbit
-        print("Go to Orbit Phase")
+        lastPhase=last_phase(lastPhase,1)
         gunner_x=r*math.cos(t)+center_x
         gunner_y=r*math.sin(t)+center_y
     elif dist>r:#far from orbit
-        print("Rush Phase")
+        lastPhase=last_phase(lastPhase,2)
         gunner_x+=gunner_speed*math.cos(g_to_p_ang)
         gunner_y+=gunner_speed*math.sin(g_to_p_ang)
     elif dist<r:#far inside of orbit
-        print("Run Phase")
+        lastPhase=last_phase(lastPhase,3)
         gunner_x+=gunner_speed*math.cos(p_to_g_ang)
         gunner_y+=gunner_speed*math.sin(p_to_g_ang)
     gunner_x=within_border_check(gunner_x)
     gunner_y=within_border_check(gunner_y)
     canvas.coords(gunner, gunner_x-10, gunner_y-10, gunner_x+10, gunner_y+10)
-    root.after(100, gunner_check)
+    root.after(100, gunner_check, lastPhase)
 
 #player movement
 def movement():
