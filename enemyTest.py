@@ -51,18 +51,20 @@ def on_release(key):
     key=key_to_str(key)
     keypress_list.remove(key)
 
+#gunner functions
 def last_phase(last,n):
     phase_list=[f"{i} Phase" for i in ["Orbit", "Go To Orbit", "Rush", "Run"]]
     if last!=n:
         print(phase_list[n])
     return n
 
-def within_border_check(n):
-    return n if 10<n<790 else [10,790][n>790]
+def within_border_check(n, length):
+    max_bound=800-length
+    return n if length<n<max_bound else [length,max_bound][n>max_bound]
     
 #gunner movement
 def gunner_check(lastPhase=-1):
-    global r, center_x, center_y, gunner_x, gunner_y, gunner, gunner_speed
+    global r, center_x, center_y, gunner_x, gunner_y, gunner, gunner_speed, gunner_length, millisecondRate
     PI=math.pi
     dx=center_x-gunner_x
     dy=center_y-gunner_y
@@ -88,14 +90,14 @@ def gunner_check(lastPhase=-1):
         lastPhase=last_phase(lastPhase,3)
         gunner_x+=gunner_speed*math.cos(p_to_g_ang)
         gunner_y+=gunner_speed*math.sin(p_to_g_ang)
-    gunner_x=within_border_check(gunner_x)
-    gunner_y=within_border_check(gunner_y)
-    canvas.coords(gunner, gunner_x-10, gunner_y-10, gunner_x+10, gunner_y+10)
-    root.after(100, gunner_check, lastPhase)
+    gunner_x=within_border_check(gunner_x, gunner_length)
+    gunner_y=within_border_check(gunner_y, gunner_length)
+    canvas.coords(gunner, gunner_x-gunner_length, gunner_y-gunner_length, gunner_x+gunner_length, gunner_y+gunner_length)
+    root.after(millisecondRate, gunner_check, lastPhase)
 
 #player movement
 def movement():
-    global keypress_list, speed, center_x, center_y, speed, safe_circle, r, player
+    global keypress_list, speed, center_x, center_y, speed, safe_circle, r, player, player_length, millisecondRate
     dx=0
     dy=0
     if "down" in keypress_list:
@@ -108,11 +110,11 @@ def movement():
         dx+=speed
     center_x+=dx
     center_y+=dy
-    center_x=within_border_check(center_x)
-    center_y=within_border_check(center_y)
+    center_x=within_border_check(center_x, player_length)
+    center_y=within_border_check(center_y, player_length)
     canvas.coords(safe_circle, center_x-r, center_y-r, center_x+r, center_y+r)
-    canvas.coords(player, center_x-10, center_y-10, center_x+10, center_y+10)
-    root.after(100, movement)
+    canvas.coords(player, center_x-player_length, center_y-player_length, center_x+player_length, center_y+player_length)
+    root.after(millisecondRate, movement)
 
 #tkinter canvas
 root=tk.Tk()
@@ -120,19 +122,27 @@ canvas=tk.Canvas(root, height=800, width=800)
 root.resizable(False, False)
 
 #player stats
-center_x=400
-center_y=400
-speed=10
-r=100
+center_x=400#player start pos x-coord
+center_y=400#player start pos y-coord
+speed=10#player's speed
+player_length=20#player's length/width
+player_length/=2
 
 #gunner stats
-gunner_x=10
-gunner_y=10
-gunner_speed=5
+gunner_x=10#gunner start pos x-coord
+gunner_y=10#gunner start pos y-coord
+gunner_speed=5#gunner's speed
+gunner_length=20#gunner's length/width
+r=100#safe distance
+gunner_length/=2
+
+#framerate
+updateRate=10#update this many times per second
+millisecondRate=1000//updateRate
 
 #creating widgets
-player=canvas.create_rectangle(center_x-10, center_y-10, center_x+10, center_y+10)
-gunner=canvas.create_rectangle(gunner_x-10, gunner_y-10, gunner_x+10, gunner_y+10)
+player=canvas.create_rectangle(center_x-player_length, center_y-player_length, center_x+player_length, center_y+player_length)
+gunner=canvas.create_rectangle(gunner_x-gunner_length, gunner_y-gunner_length, gunner_x+gunner_length, gunner_y+gunner_length)
 safe_circle=canvas.create_oval(center_x-r, center_y-r, center_x+r, center_y+r)
 
 #keyboard input
@@ -142,6 +152,6 @@ listener.start()
 
 #initialize
 canvas.pack()
-root.after(100,gunner_check)
-root.after(100, movement)
+root.after(millisecondRate,gunner_check)
+root.after(millisecondRate, movement)
 root.mainloop()
