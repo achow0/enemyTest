@@ -60,7 +60,7 @@ def last_phase(last,n):
 
 def within_border_check(n, length):
     max_bound=800-length
-    return n if length<n<max_bound else [length,max_bound][n>max_bound]
+    return n if length<=n<=max_bound else [length,max_bound][n>max_bound]
     
 #gunner movement
 def gunner_check(lastPhase=-1):
