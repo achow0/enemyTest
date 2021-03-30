@@ -51,13 +51,14 @@ def on_release(key):
     key=key_to_str(key)
     keypress_list.remove(key)
 
-#gunner functions
+#check last phase
 def last_phase(last,n):
     phase_list=[f"{i} Phase" for i in ["Orbit", "Go To Orbit", "Rush", "Run"]]
     if last!=n:
         print(phase_list[n])
     return n
 
+#check if player or gunner is going to move out of bounds
 def within_border_check(n, length):
     max_bound=800-length
     return n if length<=n<=max_bound else [length,max_bound][n>max_bound]
@@ -146,12 +147,12 @@ player=canvas.create_rectangle(center_x-player_length, center_y-player_length, c
 gunner=canvas.create_rectangle(gunner_x-gunner_length, gunner_y-gunner_length, gunner_x+gunner_length, gunner_y+gunner_length)
 safe_circle=canvas.create_oval(center_x-r, center_y-r, center_x+r, center_y+r)
 
-#keyboard input
+#keyboard input setup
 keypress_list=[]
 listener=keyboard.Listener(on_press=on_press, on_release=on_release)
 listener.start()
 
-#initialize
+#initialize main logic
 canvas.pack()
 root.after(millisecondRate,gunner_check)
 root.after(millisecondRate, movement)
