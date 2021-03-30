@@ -120,6 +120,7 @@ def movement():
 root=tk.Tk()
 canvas=tk.Canvas(root, height=800, width=800)
 root.resizable(False, False)
+root.title("Enemy Movement Test")
 
 #player stats
 center_x=400#player start pos x-coord
