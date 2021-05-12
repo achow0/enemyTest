@@ -2,7 +2,7 @@
 This was the code used to test an enemy's movement in my friend's game. You can control the player using the arrow keys. There is no collision or anything like that; it's just testing the movement. I have uploaded two .py files: one of them(enemyTest.py) is pretty messy but works; the other is a object-oriented version(enemyOOP.py) of the first file but the code is more organized/cleaner IMO.
 ## Brief Explanation
 This enemy will rush the player until it is a certain distance away from the player(I will call this distance r), then start orbiting around the player. The circle has radius r to show where the enemy will start orbiting. I will be calling the circle "orbit". The enemy will start running away if it is too close to the player(within the circle).
-The enemy has 4 "movement phases", which I will be listing below.
+The enemy has 3 "movement phases", which I will be listing below.
 ## Phase 1: Orbit Phase
 When the enemy is close to the player(within r±speed units away from the circle, where speed is referring to the speed of the enemy), this phase will be initiated. This signifies that the enemy is currently orbitting or entering into the orbit. This will either move the enemy into the orbit, or make the enemy continue on the orbit. 
 ## Phase 2: Rush Phase
