@@ -53,7 +53,7 @@ def on_release(key):
 
 #check last phase
 def last_phase(last,n):
-    phase_list=[f"{i} Phase" for i in ["Orbit", "Go To Orbit", "Rush", "Run"]]
+    phase_list=[f"{i} Phase" for i in ["Orbit", "Rush", "Run"]]
     if last!=n:
         print(phase_list[n])
     return n
@@ -74,21 +74,17 @@ def gunner_check(lastPhase=-1):
     dist=math.sqrt(dx*dx+dy*dy)
     ang_increase=gunner_speed/r
     t=p_to_g_ang
-    if abs(dist-r)<=0.5:#basically on the orbit
+    if abs(dist-r)<=gunner_speed:#basically on the orbit
         lastPhase=last_phase(lastPhase,0)
         t+=ang_increase
         gunner_x=r*math.cos(t)+center_x
         gunner_y=r*math.sin(t)+center_y
-    elif abs(dist-r)<10:#within the vicinity of orbit
-        lastPhase=last_phase(lastPhase,1)
-        gunner_x=r*math.cos(t)+center_x
-        gunner_y=r*math.sin(t)+center_y
     elif dist>r:#far from orbit
-        lastPhase=last_phase(lastPhase,2)
+        lastPhase=last_phase(lastPhase,1)
         gunner_x+=gunner_speed*math.cos(g_to_p_ang)
         gunner_y+=gunner_speed*math.sin(g_to_p_ang)
     elif dist<r:#far inside of orbit
-        lastPhase=last_phase(lastPhase,3)
+        lastPhase=last_phase(lastPhase,2)
         gunner_x+=gunner_speed*math.cos(p_to_g_ang)
         gunner_y+=gunner_speed*math.sin(p_to_g_ang)
     gunner_x=within_border_check(gunner_x, gunner_length)
